@@ -24,8 +24,143 @@ st.set_page_config(
 # ─────────────────────────────────────────────
 # LIQUID GLASS CSS (Adapted: Dark Gray Background & White Cards)
 # ─────────────────────────────────────────────
-# CSS temporairement désactivé pour debug
-st.caption("Mode diagnostic : CSS désactivé")
+st.markdown("""
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+
+    /* Fond principal sombre uniquement sur l'application racine */
+    .stApp {
+        background-color: #111317 !important;
+        font-family: 'Inter', sans-serif;
+    }
+
+    /* Le wrapper de conteneur avec bordure de Streamlit devient blanc */
+    div[data-testid="stVerticalBlockBorderWrapper"] {
+        background-color: #ffffff !important;
+        border: 1px solid #e2e8f0 !important;
+        border-radius: 16px !important;
+        padding: 24px !important;
+        margin-bottom: 20px !important;
+        box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05) !important;
+        transition: all 0.3s ease !important;
+    }
+    
+    /* Enfant direct (zone de contenu interne) forcé en blanc */
+    div[data-testid="stVerticalBlockBorderWrapper"] > div {
+        background-color: #ffffff !important;
+        background: #ffffff !important;
+    }
+
+    div[data-testid="stVerticalBlockBorderWrapper"]:hover {
+        transform: translateY(-2px) !important;
+        box-shadow: 0 10px 15px -3px rgba(0,0,0,0.08) !important;
+        border-color: #cbd5e1 !important;
+    }
+
+    /* Textes et éléments globaux de l'application en blanc */
+    .stApp h1, .stApp h2, .stApp h3, .stApp h4, .stApp h5, .stApp h6, .stApp p, .stApp span, .stApp label {
+        color: #f1f5f9;
+    }
+
+    /* Textes et éléments intérieurs des blocs blancs forcés en sombre */
+    div[data-testid="stVerticalBlockBorderWrapper"] *,
+    div[data-testid="stVerticalBlockBorderWrapper"] p,
+    div[data-testid="stVerticalBlockBorderWrapper"] span,
+    div[data-testid="stVerticalBlockBorderWrapper"] label,
+    div[data-testid="stVerticalBlockBorderWrapper"] h1,
+    div[data-testid="stVerticalBlockBorderWrapper"] h2,
+    div[data-testid="stVerticalBlockBorderWrapper"] h3,
+    div[data-testid="stVerticalBlockBorderWrapper"] h4,
+    div[data-testid="stVerticalBlockBorderWrapper"] h5,
+    div[data-testid="stVerticalBlockBorderWrapper"] h6 {
+        color: #1e293b !important;
+    }
+
+    /* KPI Cards blanches spécifiques (au cas où stylées via HTML) */
+    .kpi-card {
+        background: #ffffff !important;
+        border: 1px solid #e2e8f0 !important;
+        border-radius: 16px !important;
+        padding: 22px !important;
+        text-align: left !important;
+        box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05), 0 2px 4px -1px rgba(0,0,0,0.03) !important;
+        transition: all 0.3s ease !important;
+        height: 100% !important;
+    }
+    .kpi-card:hover {
+        transform: translateY(-3px) !important;
+        box-shadow: 0 10px 15px -3px rgba(0,0,0,0.08) !important;
+        border-color: #cbd5e1 !important;
+    }
+    .kpi-card .kpi-icon { font-size: 28px; margin-bottom: 10px; display: inline-block; }
+    .kpi-card .kpi-label {
+        font-size: 11px; font-weight: 600; color: #64748b !important;
+        text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 4px;
+    }
+    .kpi-card .kpi-value { font-size: 28px; font-weight: 800; color: #0f172a !important; line-height: 1.2; margin-bottom: 4px; }
+    .kpi-card .kpi-sub { font-size: 12px; font-weight: 600; color: #94a3b8 !important; }
+
+    /* Bordures de couleur sur le dessus des KPI */
+    .kpi-card.accent-blue   { border-top: 4px solid #3b82f6 !important; }
+    .kpi-card.accent-purple { border-top: 4px solid #8b5cf6 !important; }
+    .kpi-card.accent-pink   { border-top: 4px solid #ec4899 !important; }
+    .kpi-card.accent-cyan   { border-top: 4px solid #06b6d4 !important; }
+    .kpi-card.accent-green  { border-top: 4px solid #10b981 !important; }
+
+    /* Header */
+    .dashboard-header { text-align: center; padding: 35px 20px 20px; }
+    .dashboard-header h1 {
+        font-size: 42px; font-weight: 850;
+        color: #ffffff !important;
+        margin-bottom: 6px; letter-spacing: -1.2px;
+    }
+    .dashboard-header .subtitle { font-size: 14px; color: #94a3b8 !important; letter-spacing: 3px; text-transform: uppercase; }
+    .dashboard-header .timestamp { font-size: 12px; color: #64748b !important; margin-top: 10px; }
+
+    .section-title {
+        font-size: 19px; font-weight: 700; color: #f1f5f9 !important;
+        margin: 30px 0 16px 4px; display: flex; align-items: center; gap: 8px;
+    }
+    .section-title .dot { width: 8px; height: 8px; border-radius: 50%; display: inline-block; background-color: currentColor; }
+
+    /* Cartes Insight */
+    .insight-card {
+        background: #f8fafc !important; border: 1px solid #e2e8f0 !important;
+        border-left: 4px solid var(--ic, #818cf8) !important; border-radius: 12px !important;
+        padding: 16px !important; margin-bottom: 12px !important;
+    }
+    .insight-card .ic-title { font-size: 14px; font-weight: 700; color: #0f172a !important; margin-bottom: 4px; }
+    .insight-card .ic-text { font-size: 13px; color: #475569 !important; line-height: 1.5; }
+
+    .corr-badge {
+        display: inline-block; padding: 5px 12px; border-radius: 8px; font-weight: 700; font-size: 12px;
+        background: #f1f5f9 !important; color: #4f46e5 !important; border: 1px solid #e2e8f0 !important;
+        margin-bottom: 10px;
+    }
+
+    /* Streamlit Overrides */
+    .stApp > header { background: transparent !important; }
+    div[data-testid="stToolbar"], div[data-testid="stDecoration"], div[data-testid="stStatusWidget"] { display: none; }
+    .stMarkdown, .stMarkdown p { font-family: 'Inter', sans-serif !important; }
+    div[data-testid="stHorizontalBlock"] { gap: 16px; }
+    .block-container { padding-top: 1rem !important; max-width: 1280px; position: relative; z-index: 1; }
+    
+    /* Sidebar sombre propre */
+    section[data-testid="stSidebar"] {
+        background: #16171d !important;
+        border-right: 1px solid #272730 !important;
+        z-index: 2;
+    }
+    section[data-testid="stSidebar"] * {
+        color: #f1f5f9 !important;
+    }
+
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.08); border-radius: 3px; }
+    ::-webkit-scrollbar-thumb:hover { background: rgba(255, 255, 255, 0.15); }
+</style>
+""", unsafe_allow_html=True)
 
 
 # ─────────────────────────────────────────────
