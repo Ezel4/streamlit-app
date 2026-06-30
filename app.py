@@ -28,19 +28,15 @@ st.markdown("""
 <style>
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
 
-    /* Fond principal sombre (gris/noir) */
-    html, body, .stApp,
-    [data-testid="stAppViewContainer"],
-    [data-testid="stHeader"],
-    [data-testid="stMain"],
-    .main, .block-container {
-        background: #111317 !important;
+    /* Fond principal sombre uniquement sur l'application racine */
+    .stApp {
+        background-color: #111317 !important;
+        font-family: 'Inter', sans-serif;
     }
-    .stApp { font-family: 'Inter', sans-serif; position: relative; }
 
-    /* Blocs blancs épurés */
-    .glass-card {
-        background: #ffffff !important;
+    /* Blocs blancs épurés pour les conteneurs avec bordure de Streamlit */
+    div[data-testid="stVerticalBlockBorderWrapper"] {
+        background-color: #ffffff !important;
         border: 1px solid #e2e8f0 !important;
         border-radius: 16px !important;
         padding: 24px !important;
@@ -48,16 +44,33 @@ st.markdown("""
         box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05), 0 2px 4px -1px rgba(0,0,0,0.03) !important;
         transition: all 0.3s ease !important;
     }
-    .glass-card:hover {
+    div[data-testid="stVerticalBlockBorderWrapper"]:hover {
         transform: translateY(-2px) !important;
         box-shadow: 0 10px 15px -3px rgba(0,0,0,0.08), 0 4px 6px -4px rgba(0,0,0,0.08) !important;
         border-color: #cbd5e1 !important;
     }
-    .glass-card * {
+
+    /* Textes et éléments globaux en blanc (hors des blocs blancs et de la sidebar) */
+    .stApp h1, .stApp h2, .stApp h3, .stApp h4, .stApp h5, .stApp h6, .stApp p, .stApp span, .stApp label {
+        color: #f1f5f9;
+    }
+
+    /* Textes et éléments intérieurs des blocs blancs forcés en sombre */
+    div[data-testid="stVerticalBlockBorderWrapper"] *,
+    div[data-testid="stVerticalBlockBorderWrapper"] p,
+    div[data-testid="stVerticalBlockBorderWrapper"] h1,
+    div[data-testid="stVerticalBlockBorderWrapper"] h2,
+    div[data-testid="stVerticalBlockBorderWrapper"] h3,
+    div[data-testid="stVerticalBlockBorderWrapper"] h4,
+    div[data-testid="stVerticalBlockBorderWrapper"] h5,
+    div[data-testid="stVerticalBlockBorderWrapper"] h6,
+    div[data-testid="stVerticalBlockBorderWrapper"] span,
+    div[data-testid="stVerticalBlockBorderWrapper"] label,
+    div[data-testid="stVerticalBlockBorderWrapper"] div {
         color: #1e293b !important;
     }
 
-    /* KPI Cards blanches */
+    /* KPI Cards blanches spécifiques (au cas où stylées via HTML) */
     .kpi-card {
         background: #ffffff !important;
         border: 1px solid #e2e8f0 !important;
